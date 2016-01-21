@@ -25,16 +25,22 @@ public class ViewController {
   @RequestMapping(value = "/profile/{username}", method = RequestMethod.GET)
   public Object showProfileView(HttpServletResponse response, @PathVariable(value = "username") String username,  Model model ) {
 
-    
     final String requestUrl = "http://localhost:8080/restsample/users/" + username;
 
-    UriComponentsBuilder uriBuilder = UriComponentsBuilder.fromHttpUrl(requestUrl)
-        .queryParam("user_id", "ssang1105");
+    /*
+     *  Request 1
+     */
+    
+    UriComponentsBuilder uriBuilder = UriComponentsBuilder
+        .fromHttpUrl(requestUrl)
+        .queryParam("username", username);
     RestTemplate restTemplate = new RestTemplate();
     User user = restTemplate.getForObject(uriBuilder.build().toUri(), User.class);
     
     
+    
     logger.info("RESPONSE!!!!!!" + user);
+    
     
     model.addAttribute("user_id", user.getId());
     model.addAttribute("user_name", user.getUsername());
